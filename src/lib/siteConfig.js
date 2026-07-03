@@ -7,7 +7,7 @@ export const SITE = {
 	phone: "+91-9795459646",
 	phoneTel: "919795459646",
 	whatsapp: "919795459646", // international, no +, used in wa.me links
-	email: "bhadouriarudra665@gmail.com",
+	email: "bussiness@shubh-garhi.com",
 	address: "Jhansi, Uttar Pradesh, India 284001",
 	mapEmbed:
 		"https://www.google.com/maps?q=Jhansi%2C%20Uttar%20Pradesh%2C%20India%20284001&output=embed",
