@@ -1,0 +1,6 @@
+
+Action: file_editor create /app/frontend/public/robots.txt --file-text "User-agent: *
+Allow: /
+Sitemap: https://shubhgarhi.in/sitemap.xml
+"
+Observation: Create successful: /app/frontend/public/robots.txt
