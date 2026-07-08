@@ -100,7 +100,7 @@ export default function Hero() {
 						<Stat n="120+" label="Events delivered" />
 						<Stat n="40+" label="Vendor partners" />
 						<Stat n="7" label="Cities served" />
-					</div> */}
+					</div>  */}
 				</div>
 			</div>
 
