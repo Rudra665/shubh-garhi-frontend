@@ -70,7 +70,12 @@ export default function Hero() {
 						<a
 							data-testid="hero-whatsapp-btn"
 							href={waLink(
-								`Hi ${SITE.brand}! I'd like a quote for my upcoming event.`,
+								`Hi ${SITE.brand}! I'd like a quote for my upcoming event. Here are my details:
+				Name:
+				Phone:
+				preferred date of event:
+				preferred location of event:
+				Services interested in:`,
 							)}
 							target="_blank"
 							rel="noreferrer"

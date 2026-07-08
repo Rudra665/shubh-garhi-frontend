@@ -29,5 +29,10 @@ export const SITE = {
 };
 
 export const waLink = (
-	text = "Hi! I'd like to enquire about wedding planning.",
+	text = `Hi! I'd like to enquire about wedding planning. Here are my details:
+				Name:
+				Phone:
+				preferred date of event:
+				preferred location of event:
+				Services interested in:`,
 ) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;

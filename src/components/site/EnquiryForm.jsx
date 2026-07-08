@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Calendar as CalIcon, Loader2, Send } from "lucide-react";
 import { SITE } from "@/lib/siteConfig";
+import { SERVICES } from "@/components/site/Services";
 import { useState } from "react";
 
 const API_BASE = (import.meta.env.VITE_BACKEND_URL ?? "").replace(/\/$/, "");
@@ -10,13 +11,28 @@ const API = API_BASE ? `${API_BASE}/api` : "/api";
 const EVENT_TYPES = [
 	"Wedding",
 	"Engagement / Roka",
+	"Pre-Wedding Shoot",
+	"Cocktail / Sangeet Night",
 	"Sangeet",
 	"Haldi / Mehendi",
+	"Baraat / Welcome Ceremony",
 	"Reception",
-	"Birthday / Anniversary",
-	"Corporate Event",
-	"Other",
+	"Post-Wedding Brunch",
 ];
+
+const BUDGET_OPTIONS = [
+	"Under ₹3 lakh",
+	"₹3–5 lakh",
+	"₹5–10 lakh",
+	"₹10–20 lakh",
+	"₹20 lakh+",
+	"Prefer to discuss",
+];
+
+const SERVICE_OPTIONS = SERVICES.map((service) => ({
+	value: service.id,
+	label: service.title,
+}));
 
 export default function EnquiryForm() {
 	const [form, setForm] = useState({
@@ -24,6 +40,11 @@ export default function EnquiryForm() {
 		phone: "",
 		event_type: "",
 		city: SITE.city,
+		guest_count: "",
+		preferred_locations: "",
+		venue_name: "",
+		budget_range: "",
+		services_needed: [],
 		message: "",
 	});
 	const [date, setDate] = useState("");
@@ -32,10 +53,23 @@ export default function EnquiryForm() {
 	const update = (k) => (e) =>
 		setForm((p) => ({ ...p, [k]: e?.target ? e.target.value : e }));
 
+	const toggleService = (serviceId) => {
+		setForm((p) => ({
+			...p,
+			services_needed: p.services_needed.includes(serviceId)
+				? p.services_needed.filter((id) => id !== serviceId)
+				: [...p.services_needed, serviceId],
+		}));
+	};
+
 	const submit = async (e) => {
 		e.preventDefault();
 		if (!form.name.trim() || !form.phone.trim()) {
 			toast.error("Please share your name and phone number.");
+			return;
+		}
+		if (!form.services_needed.length) {
+			toast.error("Please select at least one service you need.");
 			return;
 		}
 		setSubmitting(true);
@@ -43,6 +77,7 @@ export default function EnquiryForm() {
 			await axios.post(`${API}/leads`, {
 				...form,
 				event_date: date,
+				services_needed: form.services_needed.join(", "),
 			});
 			toast.success("Thank you! We'll reach out within 24 hours.");
 			setForm({
@@ -50,6 +85,11 @@ export default function EnquiryForm() {
 				phone: "",
 				event_type: "",
 				city: SITE.city,
+				guest_count: "",
+				preferred_locations: "",
+				venue_name: "",
+				budget_range: "",
+				services_needed: [],
 				message: "",
 			});
 			setDate("");
@@ -110,6 +150,43 @@ export default function EnquiryForm() {
 					data-testid="enquiry-form"
 					className="lg:col-span-7 card-soft p-6 sm:p-8 space-y-5"
 				>
+					<div className="space-y-3">
+						<label className="block text-xs uppercase tracking-[0.18em] text-muted-foreground">
+							Services you need *
+						</label>
+						<div className="grid sm:grid-cols-2 gap-2">
+							{SERVICE_OPTIONS.map((service) => {
+								const checked = form.services_needed.includes(
+									service.value,
+								);
+								return (
+									<button
+										type="button"
+										key={service.value}
+										data-testid={`service-option-${service.value}`}
+										onClick={() =>
+											toggleService(service.value)
+										}
+										className={`rounded-lg border px-4 py-3 text-left transition-colors ${
+											checked
+												? "border-primary bg-primary/5 text-foreground"
+												: "border-border bg-white hover:border-primary/50"
+										}`}
+									>
+										<span className="block text-sm font-medium">
+											{service.label}
+										</span>
+										<span className="block text-xs text-muted-foreground mt-1">
+											{checked
+												? "Selected"
+												: "Tap to add"}
+										</span>
+									</button>
+								);
+							})}
+						</div>
+					</div>
+
 					<div className="grid sm:grid-cols-2 gap-5">
 						<Field label="Full Name *">
 							<input
@@ -149,22 +226,81 @@ export default function EnquiryForm() {
 								/>
 							</div>
 						</Field>
-						<Field label="Event Type">
+						<Field label="Wedding Event Type">
 							<select
 								data-testid="form-event-type"
 								value={form.event_type}
 								onChange={(e) =>
-									setForm((p) => ({ ...p, event_type: e.target.value }))
+									setForm((p) => ({
+										...p,
+										event_type: e.target.value,
+									}))
 								}
 								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
 							>
 								<option value="">Choose…</option>
 								{EVENT_TYPES.map((t) => (
-									<option key={t} value={t} data-testid={`event-type-${t}`}>
+									<option
+										key={t}
+										value={t}
+										data-testid={`event-type-${t}`}
+									>
 										{t}
 									</option>
 								))}
 							</select>
+						</Field>
+					</div>
+
+					<div className="grid sm:grid-cols-2 gap-5">
+						<Field label="Guest Count">
+							<input
+								data-testid="form-guest-count"
+								type="number"
+								min="1"
+								value={form.guest_count}
+								onChange={update("guest_count")}
+								placeholder="Approx. number of guests"
+								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+							/>
+						</Field>
+						<Field label="Budget Range">
+							<select
+								data-testid="form-budget-range"
+								value={form.budget_range}
+								onChange={update("budget_range")}
+								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+							>
+								<option value="">Select budget range</option>
+								{BUDGET_OPTIONS.map((budget) => (
+									<option key={budget} value={budget}>
+										{budget}
+									</option>
+								))}
+							</select>
+						</Field>
+					</div>
+
+					<div className="grid sm:grid-cols-2 gap-5">
+						<Field label="Preferred Location(s)">
+							<input
+								data-testid="form-preferred-locations"
+								type="text"
+								value={form.preferred_locations}
+								onChange={update("preferred_locations")}
+								placeholder="Jhansi, Orchha, Datia…"
+								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+							/>
+						</Field>
+						<Field label="Venue / Property Name">
+							<input
+								data-testid="form-venue-name"
+								type="text"
+								value={form.venue_name}
+								onChange={update("venue_name")}
+								placeholder="Hotel, lawn, farmhouse or palace name"
+								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+							/>
 						</Field>
 					</div>
 
@@ -185,7 +321,7 @@ export default function EnquiryForm() {
 							value={form.message}
 							onChange={update("message")}
 							rows={4}
-							placeholder="Approx. guest count, venue (if booked), services you're looking for…"
+							placeholder="Share any timeline, special requests, vendor preferences, décor style, or other details we should know…"
 							className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
 						/>
 					</Field>

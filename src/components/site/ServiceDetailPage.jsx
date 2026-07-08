@@ -29,7 +29,12 @@ export default function ServiceDetailPage() {
 					</Link>
 					<a
 						href={waLink(
-							`Hi! I want to enquire about ${service.title}.`,
+							`Hi! I want to enquire about ${service.title}. Here are my details:
+				Name:
+				Phone:
+				preferred date of event:
+				preferred location of event:
+				Services interested in:`,
 						)}
 						target="_blank"
 						rel="noreferrer"
