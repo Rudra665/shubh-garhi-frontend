@@ -1,11 +1,12 @@
 import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { SERVICES } from "@/components/site/Services";
 import { waLink } from "@/lib/siteConfig";
 
 export default function ServiceDetailPage() {
 	const { serviceId } = useParams();
+	const navigate = useNavigate();
 	const service = SERVICES.find((s) => s.id === serviceId);
 
 	useEffect(() => {
@@ -16,12 +17,24 @@ export default function ServiceDetailPage() {
 		return <Navigate to="/" replace />;
 	}
 
+	const goToServicesSection = (e) => {
+		e.preventDefault();
+		navigate("/");
+		// wait for the home route to mount, then scroll to the section
+		setTimeout(() => {
+			document
+				.getElementById("services")
+				?.scrollIntoView({ behavior: "smooth" });
+		}, 100);
+	};
+
 	return (
 		<section className="section-y bg-background">
 			<div className="container-x">
 				<div className="mb-8 flex items-center justify-between gap-4">
 					<Link
-						to="/"
+						to="/#services"
+						onClick={goToServicesSection}
 						className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
 					>
 						<ArrowLeft className="h-4 w-4" />
@@ -93,7 +106,8 @@ export default function ServiceDetailPage() {
 								vendors.
 							</p>
 							<Link
-								to="/"
+								to="/#services"
+								onClick={goToServicesSection}
 								className="mt-6 inline-flex items-center gap-2 text-sm text-primary hover:underline"
 							>
 								View all services
