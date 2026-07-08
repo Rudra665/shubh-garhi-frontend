@@ -20,13 +20,29 @@ export default function ServiceDetailPage() {
 	const goToServicesSection = (e) => {
 		e.preventDefault();
 		navigate("/");
-		// wait for the home route to mount, then scroll to the section
-		setTimeout(() => {
-			document
-				.getElementById("services")
-				?.scrollIntoView({ behavior: "smooth" });
-		}, 100);
+		scrollToServicesWhenReady();
 	};
+
+	function scrollToServicesWhenReady() {
+		const existing = document.getElementById("services");
+		if (existing) {
+			existing.scrollIntoView({ behavior: "smooth", block: "start" });
+			return;
+		}
+
+		const observer = new MutationObserver(() => {
+			const el = document.getElementById("services");
+			if (el) {
+				observer.disconnect();
+				el.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
+		});
+
+		observer.observe(document.body, { childList: true, subtree: true });
+
+		// safety net: stop watching after 5s so we don't leak an observer
+		setTimeout(() => observer.disconnect(), 5000);
+	}
 
 	return (
 		<section className="section-y bg-background">
