@@ -53,7 +53,7 @@ export default function Hero() {
 						{SITE.brand} brings together a hand-picked network of
 						décor artists, chefs, beauticians, performers and ritual
 						specialists — orchestrated as one seamless celebration
-						across Jhansi and Bundelkhand.
+						across {SITE.serviceAreas.join(", ")}.
 					</p>
 
 					<div
@@ -70,7 +70,12 @@ export default function Hero() {
 						<a
 							data-testid="hero-whatsapp-btn"
 							href={waLink(
-								`Hi ${SITE.brand}! I'd like a quote for my upcoming event.`,
+								`Hi ${SITE.brand}! I'd like a quote for my upcoming event. Here are my details:
+				Name:
+				Phone:
+				preferred date of event:
+				preferred location of event:
+				Services interested in:`,
 							)}
 							target="_blank"
 							rel="noreferrer"
@@ -88,14 +93,14 @@ export default function Hero() {
 						</a>
 					</div>
 
-					<div
+					{/* <div
 						className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 text-white/80 text-sm"
 						data-testid="hero-trust"
 					>
 						<Stat n="120+" label="Events delivered" />
 						<Stat n="40+" label="Vendor partners" />
-						<Stat n="4" label="Cities served" />
-					</div>
+						<Stat n="7" label="Cities served" />
+					</div> */}
 				</div>
 			</div>
 
@@ -110,9 +115,9 @@ export default function Hero() {
 	);
 }
 
-const Stat = ({ n, label }) => (
-	<div className="flex items-baseline gap-2">
-		<span className="font-display text-2xl text-[#E8C887]">{n}</span>
-		<span className="text-xs uppercase tracking-[0.2em]">{label}</span>
-	</div>
-);
+// const Stat = ({ n, label }) => (
+// 	<div className="flex items-baseline gap-2">
+// 		<span className="font-display text-2xl text-[#E8C887]">{n}</span>
+// 		<span className="text-xs uppercase tracking-[0.2em]">{label}</span>
+// 	</div>
+// );

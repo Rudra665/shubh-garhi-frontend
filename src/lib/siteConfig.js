@@ -2,7 +2,7 @@
 export const SITE = {
 	brand: "Shubh Garhi",
 	tagline: "Because Your Big Day Deserves No Compromises",
-	founder: "Mrs. Aman Tiwari & Mr. Sushil Kumar Singh",
+	founder: "Mr. Aman Tiwari & Mr. Sushil Kumar Singh",
 	city: "Jhansi",
 	phone: "+91-9795459646",
 	phoneTel: "919795459646",
@@ -17,9 +17,22 @@ export const SITE = {
 		youtube: "https://youtube.com/",
 	},
 	justDial: "https://www.justdial.com/",
-	serviceAreas: ["Jhansi", "Orchha", "Lalitpur", "Shivpuri"],
+	serviceAreas: [
+		"Jhansi",
+		"Orchha",
+		"Datia",
+		"Shivpuri",
+		"Gwalior",
+		"Lalitpur",
+		"Bhopal",
+	],
 };
 
 export const waLink = (
-	text = "Hi! I'd like to enquire about wedding planning.",
+	text = `Hi! I'd like to enquire about wedding planning. Here are my details:
+				Name:
+				Phone:
+				preferred date of event:
+				preferred location of event:
+				Services interested in:`,
 ) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;

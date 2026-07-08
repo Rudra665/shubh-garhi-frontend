@@ -6,7 +6,13 @@ export default function StickyWhatsApp() {
 		<a
 			data-testid="sticky-whatsapp"
 			href={waLink(
-				`Hi ${SITE.brand}! I'd like to know more about your wedding planning services.`,
+				`Hi ${SITE.brand}! I'd like to know more about your wedding planning services.
+				here are my details:
+				Name:
+				Phone:
+				preferred date of event:
+				preferred location of event:
+				Services interested in:`,
 			)}
 			target="_blank"
 			rel="noreferrer"
