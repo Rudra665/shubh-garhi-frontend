@@ -10,7 +10,7 @@ const API = API_BASE ? `${API_BASE}/api` : "/api";
 const FAQS = [
 	{
 		q: "What's your pricing approach?",
-		a: "Our packages are tailored to guest count, venue, and the services you choose (décor, catering, beauty, entertainment, logistics, rituals). After a short call we share a transparent itemised proposal — no last-minute add-ons.",
+		a: "Our packages are tailored to guest count, venue, and the services you choose (décor, venue, photography, catering, beauty, stationery, entertainment, gifting, vendor management, logistics, hospitality, rituals). After a short call we share a transparent itemised proposal — no last-minute add-ons.",
 	},
 	{
 		q: "Which areas do you serve?",

@@ -53,7 +53,7 @@ export default function Hero() {
 						{SITE.brand} brings together a hand-picked network of
 						décor artists, chefs, beauticians, performers and ritual
 						specialists — orchestrated as one seamless celebration
-						across Jhansi and Bundelkhand.
+						across {SITE.serviceAreas.join(", ")}.
 					</p>
 
 					<div
@@ -94,7 +94,7 @@ export default function Hero() {
 					>
 						<Stat n="120+" label="Events delivered" />
 						<Stat n="40+" label="Vendor partners" />
-						<Stat n="4" label="Cities served" />
+						<Stat n="7" label="Cities served" />
 					</div>
 				</div>
 			</div>
