@@ -21,11 +21,11 @@ const EVENT_TYPES = [
 ];
 
 const BUDGET_OPTIONS = [
-	"Under ₹3 lakh",
-	"₹3–5 lakh",
-	"₹5–10 lakh",
-	"₹10–20 lakh",
-	"₹20 lakh+",
+	"Under ₹5 lakh",
+	"₹5–15 lakh",
+	"₹15–35 lakh",
+	"₹35–70 lakh",
+	"₹70 lakh+",
 	"Prefer to discuss",
 ];
 
