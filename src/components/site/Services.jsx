@@ -37,6 +37,7 @@ export const SERVICES = [
 			"Live counters and service staff",
 			"Traditional Bundelkhandi thalis",
 			"Dessert, beverage, and snack stations",
+			"Special Tea and coffee service",
 		],
 	},
 	{
