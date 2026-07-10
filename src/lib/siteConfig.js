@@ -2,7 +2,7 @@
 export const SITE = {
 	brand: "Shubh Garhi",
 	tagline: "Because Your Big Day Deserves No Compromises",
-	founder: "Mr. Aman Tiwari & Mr. Sushil Kumar Singh",
+	founder: "Mr. Aman Tiwari & Mr. Sushil Chauhan",
 	city: "Jhansi",
 	phone: "+91-9795459646",
 	phoneTel: "919795459646",

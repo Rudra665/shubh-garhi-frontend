@@ -1,7 +1,10 @@
 import { Check } from "lucide-react";
 import { SITE } from "@/lib/siteConfig";
 
-const FOUNDER_IMG = "/images/Founder.png"; /* 4:5 aspect ratio, 800x1000px */
+const FOUNDER_IMAGES = [
+	"/images/Founder.png",
+	"/images/Founder2.png",
+]; /* 4:5 aspect ratio, 800x1000px */
 
 const HIGHLIGHTS = [
 	"Single point of contact for the entire celebration",
@@ -20,12 +23,21 @@ export default function About() {
 			<div className="container-x grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 				<div className="lg:col-span-5 relative">
 					<div className="aspect-[4/5] overflow-hidden rounded-2xl card-soft">
-						<img
-							src={FOUNDER_IMG}
-							alt={`${SITE.founder}, founder of ${SITE.brand}`}
-							className="h-full w-full object-cover"
-							loading="lazy"
-						/>
+						<div className="absolute inset-0 grid grid-cols-2 gap-2 p-2">
+							{FOUNDER_IMAGES.map((src, idx) => (
+								<div
+									key={src}
+									className="overflow-hidden rounded-xl card-soft/50"
+								>
+									<img
+										src={src}
+										alt={`${SITE.founder} ${idx === 0 ? "Founder" : "Founder 2"} of ${SITE.brand}`}
+										className="h-full w-full object-cover"
+										loading="lazy"
+									/>
+								</div>
+							))}
+						</div>
 					</div>
 					<div className="hidden md:block absolute -bottom-8 -right-6 w-44 rounded-xl card-soft p-4">
 						<div className="eyebrow">Founder</div>

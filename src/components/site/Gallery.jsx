@@ -9,6 +9,14 @@ const ALL = [
 		// span: "lg:row-span-2",
 	},
 	{
+		src: "/images/wedding-micro.jpg",
+		cat: "micro-weddings",
+	},
+	{
+		src: "/images/wedding-domestication.jpg",
+		cat: "domestication-wedding",
+	},
+	{
 		src: "/images/decor1.jpg",
 		cat: "decor",
 	},
@@ -151,10 +159,12 @@ const FILTERS = [
 export default function Gallery() {
 	const [active, setActive] = useState("all");
 	const [carouselIndex, setCarouselIndex] = useState(null);
-	const items = useMemo(
-		() => (active === "all" ? ALL : ALL.filter((i) => i.cat === active)),
-		[active],
-	);
+	const items = useMemo(() => {
+		if (active === "all") return ALL;
+		return ALL.filter((i) => i.cat === active);
+	}, [active]);
+	const gridItems = active === "all" ? items.slice(0, 12) : items;
+
 	const carouselItems = items;
 	const isCarouselOpen = carouselIndex !== null && carouselItems.length > 0;
 
@@ -220,7 +230,9 @@ export default function Gallery() {
 							<button
 								key={f.id}
 								data-testid={`gallery-filter-${f.id}`}
-								onClick={() => setActive(f.id)}
+								onClick={() => {
+									setActive(f.id);
+								}}
 								className={`text-xs uppercase tracking-[0.2em] rounded-full px-4 py-2 border transition-all ${
 									active === f.id
 										? "bg-foreground text-background border-foreground"
@@ -237,7 +249,7 @@ export default function Gallery() {
 					className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:grid-rows-2"
 					data-testid="gallery-grid"
 				>
-					{items.map((it, idx) => (
+					{gridItems.map((it, idx) => (
 						<figure
 							key={idx}
 							data-testid={`gallery-item-${idx}`}
@@ -262,16 +274,18 @@ export default function Gallery() {
 					))}
 				</div>
 
-				<div className="mt-8 flex justify-center">
-					<button
-						type="button"
-						onClick={() => openCarousel(0)}
-						className="btn-primary"
-						data-testid="gallery-see-more"
-					>
-						See more photos
-					</button>
-				</div>
+				{items.length > 12 && (
+					<div className="mt-8 flex justify-center">
+						<button
+							type="button"
+							onClick={() => openCarousel(0)}
+							className="btn-primary"
+							data-testid="gallery-see-more"
+						>
+							See more photos
+						</button>
+					</div>
+				)}
 			</div>
 
 			{isCarouselOpen && (
