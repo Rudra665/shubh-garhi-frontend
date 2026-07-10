@@ -195,7 +195,7 @@ export default function Services() {
 						className="font-display text-4xl sm:text-5xl mt-5 leading-[1.05]"
 						data-testid="services-title"
 					>
-						One team. Fourteen crafts.{" "}
+						One team. Many crafts.{" "}
 						<em
 							className="not-italic"
 							style={{ color: "hsl(var(--primary))" }}
