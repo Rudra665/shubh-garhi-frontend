@@ -4,6 +4,36 @@ import { Link } from "react-router-dom";
 
 export const SERVICES = [
 	{
+		id: "domestication-wedding",
+		title: "Domestication Wedding",
+		desc: "A local-first celebration style: Orchha & Khajuraho flows, orchard/lawn moments, and a smooth, venue-friendly plan that keeps everything on-time.",
+		img: "/images/wedding-domestication.jpg",
+		featured: true,
+		included: [
+			"Orchha & Khajuraho venue coordination (local-friendly schedules)",
+			"Orchha lawn/orchard lawn experience planning",
+			"Khajuraho-style traditional flow & key moments",
+			"Curated vendors for décor, catering, beauty & rituals",
+			"Vendor timeline coordination for day-of comfort",
+			"On-ground crew from setup to send-off",
+		],
+	},
+	{
+		id: "micro-weddings",
+		title: "Micro Weddings & Intimate Celebrations",
+		desc: "Small guest counts, premium execution — from venue handling to timeline choreography, we create a seamless experience that feels personal, not rushed.",
+		img: "/images/wedding-micro.jpg",
+		featured: true,
+		included: [
+			"Curated micro-venue shortlist and site coordination",
+			"Day-of timeline + ceremony flow planning",
+			"Design direction for intimate décor & photo moments",
+			"Vendor coordination across décor, food, beauty & rituals",
+			"Photography coverage planning for key moments",
+			"On-ground support from setup to send-off",
+		],
+	},
+	{
 		id: "decor",
 		title: "Décor & Setup",
 		desc: "Hotel tie-ups, orchard lawns, palace properties and destination wedding planning across Jhansi, Orchha, Datia, Shivpuri, Gwalior, Lalitpur and Bhopal.",
@@ -37,7 +67,7 @@ export const SERVICES = [
 			"Live counters and service staff",
 			"Traditional Bundelkhandi thalis",
 			"Dessert, beverage, and snack stations",
-			"Special Tea and coffee service",
+			"Special High Tea and coffee service",
 		],
 	},
 	{
@@ -165,7 +195,7 @@ export default function Services() {
 						className="font-display text-4xl sm:text-5xl mt-5 leading-[1.05]"
 						data-testid="services-title"
 					>
-						One team. Twelve crafts.{" "}
+						One team. Fourteen crafts.{" "}
 						<em
 							className="not-italic"
 							style={{ color: "hsl(var(--primary))" }}
@@ -189,7 +219,11 @@ export default function Services() {
 							data-testid={`service-card-${s.id}`}
 							to={`/services/${s.id}`}
 							aria-label={`View details for ${s.title}`}
-							className="group block h-full card-soft overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+							className={`group block h-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
+								s.featured
+									? "ring-2 ring-primary/50 card-soft"
+									: "card-soft"
+							}`}
 						>
 							<article className="flex h-full flex-col">
 								<div className="aspect-[4/3] overflow-hidden">
