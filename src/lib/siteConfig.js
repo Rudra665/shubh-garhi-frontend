@@ -36,3 +36,24 @@ export const waLink = (
 				preferred location of event:
 				Services interested in:`,
 ) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;
+
+export const buildEnquiryWaMessage = (form, date) => {
+	const lines = [
+		`Hi ${SITE.brand}! I'd like to enquire about wedding planning.`,
+		``,
+		`*Name:* ${form.name || "-"}`,
+		`*Phone:* ${form.phone || "-"}`,
+		`*Event Date:* ${date || "-"}`,
+		`*Event Type:* ${form.event_type || "-"}`,
+		`*Guest Count:* ${form.guest_count || "-"}`,
+		`*Budget Range:* ${form.budget_range || "-"}`,
+		`*Preferred Location(s):* ${form.preferred_locations || "-"}`,
+		`*Venue / Property Name:* ${form.venue_name || "-"}`,
+		`*City:* ${form.city || "-"}`,
+		`*Services Needed:* ${
+			form.services_needed?.length ? form.services_needed.join(", ") : "-"
+		}`,
+		`*Message:* ${form.message || "-"}`,
+	];
+	return lines.join("\n");
+};

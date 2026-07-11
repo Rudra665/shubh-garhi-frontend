@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 import { Calendar as CalIcon, Loader2, Send } from "lucide-react";
-import { SITE } from "@/lib/siteConfig";
+import { SITE, buildEnquiryWaMessage, waLink } from "@/lib/siteConfig";
 import { SERVICES } from "@/components/site/Services";
 import { useState } from "react";
 
@@ -80,6 +80,11 @@ export default function EnquiryForm() {
 				services_needed: form.services_needed.join(", "),
 			});
 			toast.success("Thank you! We'll reach out within 24 hours.");
+
+			// Open WhatsApp with the enquiry pre-filled
+			const message = buildEnquiryWaMessage(form, date);
+			window.open(waLink(message), "_blank", "noopener,noreferrer");
+
 			setForm({
 				name: "",
 				phone: "",
