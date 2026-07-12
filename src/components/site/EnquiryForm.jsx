@@ -34,6 +34,46 @@ const SERVICE_OPTIONS = SERVICES.map((service) => ({
 	label: service.title,
 }));
 
+// Accepts optional +91/91 prefix, then a 10-digit number starting 6-9
+const PHONE_REGEX = /^(?:\+?91)?[6-9]\d{9}$/;
+
+function validateForm(form, date) {
+	const errors = {};
+
+	const name = form.name.trim();
+	if (!name) {
+		errors.name = "Please enter your name.";
+	} else if (name.length < 2) {
+		errors.name = "Name looks too short.";
+	}
+
+	const phone = form.phone.trim().replace(/[\s-]/g, "");
+	if (!phone) {
+		errors.phone = "Please enter your phone number.";
+	} else if (!PHONE_REGEX.test(phone)) {
+		errors.phone = "Enter a valid 10-digit Indian phone number.";
+	}
+
+	if (!form.services_needed.length) {
+		errors.services_needed = "Select at least one service.";
+	}
+
+	if (date) {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const chosen = new Date(date);
+		if (chosen < today) {
+			errors.date = "Event date can't be in the past.";
+		}
+	}
+
+	if (form.guest_count && Number(form.guest_count) <= 0) {
+		errors.guest_count = "Guest count must be a positive number.";
+	}
+
+	return errors;
+}
+
 export default function EnquiryForm() {
 	const [form, setForm] = useState({
 		name: "",
@@ -49,9 +89,12 @@ export default function EnquiryForm() {
 	});
 	const [date, setDate] = useState("");
 	const [submitting, setSubmitting] = useState(false);
+	const [errors, setErrors] = useState({});
 
-	const update = (k) => (e) =>
+	const update = (k) => (e) => {
 		setForm((p) => ({ ...p, [k]: e?.target ? e.target.value : e }));
+		if (errors[k]) setErrors((p) => ({ ...p, [k]: undefined }));
+	};
 
 	const toggleService = (serviceId) => {
 		setForm((p) => ({
@@ -60,18 +103,22 @@ export default function EnquiryForm() {
 				? p.services_needed.filter((id) => id !== serviceId)
 				: [...p.services_needed, serviceId],
 		}));
+		if (errors.services_needed) {
+			setErrors((p) => ({ ...p, services_needed: undefined }));
+		}
 	};
 
 	const submit = async (e) => {
 		e.preventDefault();
-		if (!form.name.trim() || !form.phone.trim()) {
-			toast.error("Please share your name and phone number.");
+
+		const validationErrors = validateForm(form, date);
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			toast.error("Please fix the highlighted fields.");
 			return;
 		}
-		if (!form.services_needed.length) {
-			toast.error("Please select at least one service you need.");
-			return;
-		}
+		setErrors({});
+
 		setSubmitting(true);
 		try {
 			await axios.post(`${API}/leads`, {
@@ -154,6 +201,7 @@ export default function EnquiryForm() {
 					onSubmit={submit}
 					data-testid="enquiry-form"
 					className="lg:col-span-7 card-soft p-6 sm:p-8 space-y-5"
+					noValidate
 				>
 					<div className="space-y-3">
 						<label className="block text-xs uppercase tracking-[0.18em] text-muted-foreground">
@@ -190,44 +238,67 @@ export default function EnquiryForm() {
 								);
 							})}
 						</div>
+						{errors.services_needed && (
+							<p className="text-xs text-red-600">
+								{errors.services_needed}
+							</p>
+						)}
 					</div>
 
 					<div className="grid sm:grid-cols-2 gap-5">
-						<Field label="Full Name *">
+						<Field label="Full Name *" error={errors.name}>
 							<input
 								data-testid="form-name"
 								type="text"
 								value={form.name}
 								onChange={update("name")}
 								placeholder="Your full name"
-								required
-								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+								className={`w-full rounded-md border bg-white px-3 py-2 text-sm outline-none focus:border-primary ${
+									errors.name
+										? "border-red-500"
+										: "border-border"
+								}`}
 							/>
 						</Field>
-						<Field label="Phone Number *">
+						<Field label="Phone Number *" error={errors.phone}>
 							<input
 								data-testid="form-phone"
-								type="tel"
+								type="number"
 								value={form.phone}
 								onChange={update("phone")}
 								placeholder="+91 ..."
 								inputMode="tel"
-								required
-								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+								className={`w-full rounded-md border bg-white px-3 py-2 text-sm outline-none focus:border-primary ${
+									errors.phone
+										? "border-red-500"
+										: "border-border"
+								}`}
 							/>
 						</Field>
 					</div>
 
 					<div className="grid sm:grid-cols-2 gap-5">
-						<Field label="Event Date">
+						<Field label="Event Date" error={errors.date}>
 							<div className="relative">
 								<CalIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-60" />
 								<input
 									data-testid="form-date-trigger"
 									type="date"
 									value={date}
-									onChange={(e) => setDate(e.target.value)}
-									className="w-full rounded-md border border-border bg-white py-2 pl-10 pr-3 text-sm outline-none focus:border-primary"
+									onChange={(e) => {
+										setDate(e.target.value);
+										if (errors.date) {
+											setErrors((p) => ({
+												...p,
+												date: undefined,
+											}));
+										}
+									}}
+									className={`w-full rounded-md border bg-white py-2 pl-10 pr-3 text-sm outline-none focus:border-primary ${
+										errors.date
+											? "border-red-500"
+											: "border-border"
+									}`}
 								/>
 							</div>
 						</Field>
@@ -258,7 +329,7 @@ export default function EnquiryForm() {
 					</div>
 
 					<div className="grid sm:grid-cols-2 gap-5">
-						<Field label="Guest Count">
+						<Field label="Guest Count" error={errors.guest_count}>
 							<input
 								data-testid="form-guest-count"
 								type="number"
@@ -266,7 +337,11 @@ export default function EnquiryForm() {
 								value={form.guest_count}
 								onChange={update("guest_count")}
 								placeholder="Approx. number of guests"
-								className="w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+								className={`w-full rounded-md border bg-white px-3 py-2 text-sm outline-none focus:border-primary ${
+									errors.guest_count
+										? "border-red-500"
+										: "border-border"
+								}`}
 							/>
 						</Field>
 						<Field label="Budget Range">
@@ -360,11 +435,12 @@ export default function EnquiryForm() {
 	);
 }
 
-const Field = ({ label, children }) => (
+const Field = ({ label, error, children }) => (
 	<div className="space-y-2">
 		<label className="block text-xs uppercase tracking-[0.18em] text-muted-foreground">
 			{label}
 		</label>
 		{children}
+		{error && <p className="text-xs text-red-600">{error}</p>}
 	</div>
 );
