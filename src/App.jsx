@@ -12,6 +12,7 @@ import Footer from "@/components/site/Footer";
 import StickyWhatsApp from "@/components/site/StickyWhatsApp";
 import Chatbot from "@/components/site/Chatbot";
 import ServiceDetailPage from "@/components/site/ServiceDetailPage";
+import { Helmet } from "react-helmet-async";
 
 function App() {
 	return (
@@ -35,7 +36,11 @@ function App() {
 						/>
 						<Route
 							path="/services/:serviceId"
-							element={<ServiceDetailPage />}
+							element={
+								<Helmet>
+									<ServiceDetailPage />
+								</Helmet>
+							}
 						/>
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>

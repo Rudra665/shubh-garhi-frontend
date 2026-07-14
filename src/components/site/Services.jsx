@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { ArrowUpRight } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { SITE } from "@/lib/siteConfig";
 
 export const SERVICES = [
 	{
@@ -182,83 +184,96 @@ export const SERVICES = [
 
 export default function Services() {
 	return (
-		<section
-			id="services"
-			data-testid="services-section"
-			className="section-y"
-			style={{ background: "hsl(var(--muted))" }}
-		>
-			<div className="container-x">
-				<div className="max-w-2xl">
-					<span className="divider-mark eyebrow">Services</span>
-					<h2
-						className="font-display text-4xl sm:text-5xl mt-5 leading-[1.05]"
-						data-testid="services-title"
-					>
-						One team. Many crafts.{" "}
-						<em
-							className="not-italic"
-							style={{ color: "hsl(var(--primary))" }}
+		<>
+			<Helmet>
+				<title>
+					{SITE.brand} - Wedding & Event Planning Services in{" "}
+					{SITE.city}
+				</title>
+				<meta
+					name="description"
+					content={`${SITE.brand} offers a wide range of wedding and event planning services in ${SITE.city}. From décor and catering to photography and entertainment, we ensure every detail is handled with care.`}
+				/>
+			</Helmet>
+			<section
+				id="services"
+				data-testid="services-section"
+				className="section-y"
+				style={{ background: "hsl(var(--muted))" }}
+			>
+				<div className="container-x">
+					<div className="max-w-2xl">
+						<span className="divider-mark eyebrow">Services</span>
+						<h2
+							className="font-display text-4xl sm:text-5xl mt-5 leading-[1.05]"
+							data-testid="services-title"
 						>
-							Zero compromises.
-						</em>
-					</h2>
-					<p className="text-muted-foreground mt-4 text-base sm:text-lg">
-						Pick the parts you need — or hand us the whole canvas.
-						Either way, you get a single point of accountability.
-					</p>
-				</div>
+							One team. Many crafts.{" "}
+							<em
+								className="not-italic"
+								style={{ color: "hsl(var(--primary))" }}
+							>
+								Zero compromises.
+							</em>
+						</h2>
+						<p className="text-muted-foreground mt-4 text-base sm:text-lg">
+							Pick the parts you need — or hand us the whole
+							canvas. Either way, you get a single point of
+							accountability.
+						</p>
+					</div>
 
-				<div
-					className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-					data-testid="services-grid"
-				>
-					{SERVICES.map((s) => (
-						<Link
-							key={s.id}
-							data-testid={`service-card-${s.id}`}
-							to={`/services/${s.id}`}
-							aria-label={`View details for ${s.title}`}
-							className={`group block h-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
-								s.featured
-									? "ring-2 ring-primary/50 card-soft"
-									: "card-soft"
-							}`}
-						>
-							<article className="flex h-full flex-col">
-								<div className="aspect-[4/3] overflow-hidden">
-									<img
-										src={s.img}
-										alt={s.title}
-										className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-										loading="lazy"
-									/>
-								</div>
-								<div className="p-6 flex flex-col gap-3 flex-1">
-									<div className="flex items-start justify-between gap-3">
-										<h3 className="font-display text-2xl leading-snug">
-											{s.title}
-										</h3>
-										<span
-											data-testid={`service-cta-${s.id}`}
-											className="shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors group-hover:text-primary group-hover:border-primary"
-											aria-hidden="true"
-										>
-											<ArrowUpRight className="h-4 w-4" />
-										</span>
+					<div
+						className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+						data-testid="services-grid"
+					>
+						{SERVICES.map((s) => (
+							<Link
+								key={s.id}
+								data-testid={`service-card-${s.id}`}
+								to={`/services/${s.id}`}
+								aria-label={`View details for ${s.title}`}
+								className={`group block h-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
+									s.featured
+										? "ring-2 ring-primary/50 card-soft"
+										: "card-soft"
+								}`}
+							>
+								<article className="flex h-full flex-col">
+									<div className="aspect-[4/3] overflow-hidden">
+										<img
+											src={s.img}
+											alt={s.title}
+											className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+											loading="lazy"
+										/>
 									</div>
-									<p className="text-sm text-muted-foreground leading-relaxed">
-										{s.desc}
-									</p>
-									<p className="text-xs uppercase tracking-[0.18em] text-primary/80 pt-1">
-										Click to see what’s included
-									</p>
-								</div>
-							</article>
-						</Link>
-					))}
+									<div className="p-6 flex flex-col gap-3 flex-1">
+										<div className="flex items-start justify-between gap-3">
+											<h3 className="font-display text-2xl leading-snug">
+												{s.title}
+											</h3>
+											<span
+												data-testid={`service-cta-${s.id}`}
+												className="shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors group-hover:text-primary group-hover:border-primary"
+												aria-hidden="true"
+											>
+												<ArrowUpRight className="h-4 w-4" />
+											</span>
+										</div>
+										<p className="text-sm text-muted-foreground leading-relaxed">
+											{s.desc}
+										</p>
+										<p className="text-xs uppercase tracking-[0.18em] text-primary/80 pt-1">
+											Click to see what’s included
+										</p>
+									</div>
+								</article>
+							</Link>
+						))}
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</>
 	);
 }
